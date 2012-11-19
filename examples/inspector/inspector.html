@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shumway Inspector</title>
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body>
+    <div id="stage">
+        <div id="xstats"></div>
+    </div>
+
+    <script src="jquery.min.js"></script>
+    <script src="../../lib/DataView.js/DataView.js"></script>
+    <script src="../../lib/Kanvas/kanvas.js"></script>
+    <script src="../../lib/xstats/xstats.js"></script>
+
+    <!-- Load SWF Dependencies -->
+    <script src="../../src/swf/util.js"></script>
+    <script src="../../src/swf/swf.js"></script>
+    <script src="../../src/swf/types.js"></script>
+    <script src="../../src/swf/structs.js"></script>
+    <script src="../../src/swf/tags.js"></script>
+    <script src="../../src/swf/inflate.js"></script>
+    <script src="../../src/swf/stream.js"></script>
+    <script src="../../src/swf/templates.js"></script>
+    <script src="../../src/swf/generator.js"></script>
+    <script src="../../src/swf/parser.js"></script>
+    <script src="../../src/swf/bitmap.js"></script>
+    <script src="../../src/swf/button.js"></script>
+    <script src="../../src/swf/font.js"></script>
+    <script src="../../src/swf/image.js"></script>
+    <script src="../../src/swf/label.js"></script>
+    <script src="../../src/swf/shape.js"></script>
+    <script src="../../src/swf/text.js"></script>
+
+    <!-- Load AVM1 Dependencies -->
+    <script src="../../src/avm1/classes.js"></script>
+    <script src="../../src/avm1/globals.js"></script>
+    <script src="../../src/avm1/stream.js"></script>
+    <script src="../../src/avm1/interpreter.js"></script>
+    <script src="../../src/swf/embed.js"></script>
+    <script src="../../src/swf/renderer.js"></script>
+
+
+    <script>
+      window.print = function (msg) {
+        console.log(msg);
+      };
+      var webShell = true;
+      function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          if (pair[0] == variable) {
+            return unescape(pair[1]);
+          }
+        }
+        return undefined;
+      }
+    </script>
+
+    <!-- Load AVM2 Dependencies -->
+    <script src="../../src/avm2/util.js"></script>
+    <script src="../../src/avm2/options.js"></script>
+    <script src="../../src/avm2/metrics.js"></script>
+
+    <script>
+      var Counter = new metrics.Counter(true);
+      var Timer = metrics.Timer;
+      var Option = options.Option;
+      var OptionSet = options.OptionSet;
+      var systemOptions = new OptionSet("System Options");
+      var disassemble = systemOptions.register(new Option("d", "disassemble", "boolean", false, "disassemble"));
+      var traceLevel = systemOptions.register(new Option("t", "traceLevel", "number", 0, "trace level"));
+    </script>
+
+    <script src="../../src/avm2/constants.js"></script>
+    <script src="../../src/avm2/errors.js"></script>
+    <script src="../../src/avm2/opcodes.js"></script>
+    <script src="../../src/avm2/parser.js"></script>
+    <script src="../../src/avm2/analyze.js"></script>
+    <script src="../../src/avm2/compiler/lljs/src/estransform.js"></script>
+    <script src="../../src/avm2/compiler/lljs/src/escodegen.js"></script>
+    <script src="../../src/avm2/compiler/inferrer.js"></script>
+    <script src="../../src/avm2/compiler/compiler.js"></script>
+    <script src="../../src/avm2/domain.js"></script>
+    <script src="../../src/avm2/runtime.js"></script>
+    <script src="../../src/avm2/native.js"></script>
+    <script src="../../src/avm2/disassembler.js"></script>
+    <script src="../../src/avm2/interpreter.js"></script>
+    <script src="../../src/avm2/vm.js"></script>
+
+    <!-- Load Flash Dependencies -->
+
+    <script src="../../src/flash/util.js"></script>
+    <script src="../../src/flash/events/Event.js"></script>
+    <script src="../../src/flash/events/KeyboardEvent.js"></script>
+    <script src="../../src/flash/events/MouseEvent.js"></script>
+    <script src="../../src/flash/events/TextEvent.js"></script>
+    <script src="../../src/flash/events/TimerEvent.js"></script>
+    <script src="../../src/flash/events/EventDispatcher.js"></script>
+    <script src="../../src/flash/net/NetConnection.js"></script>
+    <script src="../../src/flash/net/NetStream.js"></script>
+    <script src="../../src/flash/net/Responder.js"></script>
+    <script src="../../src/flash/display/DisplayObject.js"></script>
+    <script src="../../src/flash/display/InteractiveObject.js"></script>
+    <script src="../../src/flash/display/DisplayObjectContainer.js"></script>
+    <script src="../../src/flash/display/Sprite.js"></script>
+    <script src="../../src/flash/display/MovieClip.js"></script>
+    <script src="../../src/flash/display/Loader.js"></script>
+    <script src="../../src/flash/display/LoaderInfo.js"></script>
+    <script src="../../src/flash/display/Stage.js"></script>
+    <script src="../../src/flash/display/Bitmap.js"></script>
+    <script src="../../src/flash/display/BitmapData.js"></script>
+    <script src="../../src/flash/display/Graphics.js"></script>
+    <script src="../../src/flash/display/Shape.js"></script>
+    <script src="../../src/flash/display/SimpleButton.js"></script>
+    <script src="../../src/flash/display/MorphShape.js"></script>
+    <script src="../../src/flash/geom/Point.js"></script>
+    <script src="../../src/flash/geom/Rectangle.js"></script>
+    <script src="../../src/flash/geom/Matrix.js"></script>
+    <script src="../../src/flash/geom/ColorTransform.js"></script>
+    <script src="../../src/flash/geom/Transform.js"></script>
+    <script src="../../src/flash/media/SoundTransform.js"></script>
+    <script src="../../src/flash/media/Sound.js"></script>
+    <script src="../../src/flash/media/SoundMixer.js"></script>
+    <script src="../../src/flash/media/Video.js"></script>
+    <!--
+    <script src="../../src/flash/text/Font.js"></script>
+    -->
+    <script src="../../src/flash/text/StaticText.js"></script>
+    <script src="../../src/flash/text/TextField.js"></script>
+    <script src="../../src/flash/system/Capabilities.js"></script>
+    <script src="../../src/flash/system/FSCommand.js"></script>
+    <script src="../../src/flash/ui/Keyboard.js"></script>
+    <script src="../../src/flash/ui/Mouse.js"></script>
+    <script src="../../src/flash/utils/Timer.js"></script>
+    <script src="../../src/flash/stubs.js"></script>
+
+    <input type="file" id="files" name="files[]" multiple style="visibility: hidden;" accept="application/x-shockwave-flash">
+
+    <!--
+      Shameless copying from:
+      http://people.mozilla.com/~shorlander/highlighter-toolbar/highlighter-toolbar.html
+    -->
+
+    <div class="toolbarGroup">
+      <div class="toolbarBox withEmphasis" style="position: fixed; bottom: 380px; left: auto; right: 0px; width: 300px;" hidden>
+        <div class="closeButton"></div>
+        <div class="toolbarLabel " style="width: 240px; text-align: left;" id="message">Test</div>
+      </div>
+      <div class="toolbarInfo" style="position: fixed; bottom: 70px; left: auto; right: 0px; width: 300px; height: 300px;" id="info">
+      </div>
+      <div class="toolbarBox" style="position: fixed; bottom: 35px; left: 0; right: 0; width: auto;" id="openFileToolbar">
+        <div class="closeButton"></div>
+        <div class="toolbarLabel " style="width: 140px; text-align: left;">Shumway Inspector</div>
+        <div class="toolbarButton" id="openFile" title="Select SWF/ABC file (or drag'n'drop the file on the stage).">Open File</div>
+      </div>
+      <div class="toolbarBox" style="position: fixed; bottom: 1px; left: 0; right: 0; width: auto;">
+        <div class="closeButton"></div>
+        <div class="toolbarLabel" style="width: 140px; text-align: left;">AVM2 Options</div>
+        <div class="avm2Option toolbarButton" id="compiler">Compiler</div>
+        <div class="avm2Option toolbarButton" id="optimizer">Optimizer</div>
+        <div class="avm2Option toolbarButton" id="verifier">Verifier</div>
+        <div class="avm2Option toolbarButton" style="width: 100px" id="inlineCaching">Inline Caching</div>
+        <div class="avm2Option toolbarButton" style="width: 100px" id="release">Release</div>
+      </div>
+    </div>
+
+    <script src="inspectorSettings.js"></script>
+    <script src="inspectorLoader.js"></script>
+    <script src="inspector.js"></script>
+
+    <script>
+        SHUMWAY_ROOT = "../../src/";
+    </script>
+
+    <script>
+        var stats = new xStats;
+        document.getElementById('xstats').appendChild(stats.element);
+    </script>
+
+  </body>
+</html>
